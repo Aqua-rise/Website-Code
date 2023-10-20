@@ -1,5 +1,3 @@
-// ignore_for_file: use_build_context_synchronously
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:questure/components/my_button.dart';
@@ -147,8 +145,32 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
 
                 const SizedBox(
-                  height: 50,
+                  height: 15,
                 ),
+
+                // not a member? register now
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Already have an account?',
+                      style: TextStyle(color: Colors.grey[700]),
+                    ),
+                    const SizedBox(width: 4),
+                    GestureDetector(
+                      onTap: widget.onTap,
+                      child: const Text(
+                        'Login now',
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 50),
 
                 // or continue with
                 Padding(
@@ -178,9 +200,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 50,
-                ),
+                const SizedBox(height: 50),
 
                 // google + apple sign in buttons
                 Row(
@@ -201,32 +221,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       onTap: () {},
                       imagePath: 'lib/images/apple.png',
                     )
-                  ],
-                ),
-
-                const SizedBox(
-                  height: 50,
-                ),
-
-                // not a member? register now
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Already have an account?',
-                      style: TextStyle(color: Colors.grey[700]),
-                    ),
-                    const SizedBox(width: 4),
-                    GestureDetector(
-                      onTap: widget.onTap,
-                      child: const Text(
-                        'Login now',
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ],

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>532868288845-327k9ph1s5k23s67e2bc8ial7i3mk17e.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.532868288845-327k9ph1s5k23s67e2bc8ial7i3mk17e</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCvlZcFoRADw1XT0o77a2GHnu0OtaorY50</string>
+	<key>GCM_SENDER_ID</key>
+	<string>532868288845</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.questure</string>
+	<key>PROJECT_ID</key>
+	<string>questure-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>questure-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:532868288845:ios:121d5a4523ea38fe52a704</string>
+</dict>
+</plist>

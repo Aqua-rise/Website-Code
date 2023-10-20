@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "532868288845",
+    "project_id": "questure-app",
+    "storage_bucket": "questure-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532868288845:android:d338c2646f839f4952a704",
+        "android_client_info": {
+          "package_name": "com.example.questure"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCyJ3cbLW3yuItrSmFSwjsL3uPtFSp4C4A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

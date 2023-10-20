@@ -1,77 +1,84 @@
-import 'package:firebase_auth/firebase_auth.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
+import 'package:questure/Pages/content_page.dart';
+import 'package:questure/Pages/create_page.dart';
+import 'package:questure/Pages/library_page.dart';
+import 'package:questure/Pages/profile_page.dart';
+import 'package:questure/Pages/user_home_page.dart';
 
-class HomePage extends StatelessWidget {
-  HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
-  final user = FirebaseAuth.instance.currentUser!;
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
 
+class _HomePageState extends State<HomePage> {
+  // fire base sign out
+  // final user = FirebaseAuth.instance.currentUser!;
   // sign user out method
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
+  // void signUserOut() {
+  //   FirebaseAuth.instance.signOut();
+  // }
+
+  // navigate around the bottom nav bar
+  int _selectedIndex = 0;
+  void _navigateBottomNavBar(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
   }
+
+  // pages to navigate to
+  final List<Widget> _pages = const [
+    UserHomePage(),
+    ContentPage(),
+    CreatePage(),
+    LibraryPage(),
+    ProfilePage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        actions: [
-          IconButton(
-            onPressed: signUserOut,
-            icon: const Icon(Icons.logout),
-          )
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _navigateBottomNavBar,
+        type: BottomNavigationBarType.fixed,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.add_to_photos,
+              size: 40,
+            ),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.library_books),
+            label: 'Library',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
         ],
       ),
-
-      bottomNavigationBar: Container(
-        color: Colors.transparent,
-        child: const Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: 15.0,
-            vertical: 20,
-          ),
-          child: GNav(
-            backgroundColor: Colors.transparent,
-            color: Colors.black,
-            tabBackgroundColor: Colors.white,
-            gap: 8,
-            // onTabChange:
-            padding: EdgeInsets.all(10),
-            tabs: [
-              GButton(
-                icon: Icons.home_rounded,
-                iconActiveColor: Color.fromARGB(255, 37, 201, 94),
-                text: 'Home',
-              ),
-              GButton(
-                icon: Icons.favorite_outline,
-                iconActiveColor: Color.fromARGB(255, 236, 69, 125),
-                text: 'Likes',
-              ),
-              GButton(
-                icon: Icons.add_to_photos_rounded,
-                iconActiveColor: Colors.lightBlue,
-                text: 'Create Set',
-              ),
-              GButton(
-                icon: Icons.menu_rounded,
-                iconActiveColor: Color.fromARGB(255, 221, 205, 63),
-                text: 'Menu',
-              ),
-            ],
-          ),
-        ),
-      ),
-
-      // body: Center(
-      //   child: Text(
-      //     "LOGGED IN AS: " + user.email!,
-      //     style: const TextStyle(
-      //       fontSize: 20,
-      //     ),
-      //   ),
+      // appBar: AppBar(
+      //   actions: [
+      //     IconButton(
+      //       onPressed: signUserOut,
+      //       icon: const Icon(Icons.logout),
+      //     )
+      //   ],
       // ),
     );
   }
