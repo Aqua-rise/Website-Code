@@ -144,8 +144,9 @@ class _CreatePageState extends State<CreatePage> {
   }
 
   Widget _buildQuestionAnswerFields() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return SingleChildScrollView(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Align(
           alignment: Alignment.centerLeft,
@@ -213,11 +214,12 @@ class _CreatePageState extends State<CreatePage> {
             style: const TextStyle(fontSize: 18),
           ),
       ],
-    );
+    ));
   }
 
   Widget _buildMultipleChoiceFields() {
-    return Column(
+    return SingleChildScrollView(
+        child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Align(
@@ -300,17 +302,23 @@ class _CreatePageState extends State<CreatePage> {
             style: const TextStyle(fontSize: 18),
           ),
       ],
-    );
+    ));
   }
 
   @override
   void dispose() {
+    // Disposing all controllers
     for (var controller in _questionControllers) {
       controller.dispose();
     }
     for (var controller in _answerControllers) {
       controller.dispose();
     }
+    for (var controller in _falseAnswerControllers) {
+      controller.dispose();
+    }
+    _questionController.dispose();
+    _correctAnswerController.dispose();
     super.dispose();
   }
 }
