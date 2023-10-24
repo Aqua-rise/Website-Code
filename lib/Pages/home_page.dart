@@ -52,19 +52,19 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.public),
+            label: 'Browse',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.add_to_photos,
               size: 40,
             ),
-            label: '',
+            label: 'Create',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.library_books),
-            label: 'Library',
+            label: 'My Sets',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
