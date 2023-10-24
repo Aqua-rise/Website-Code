@@ -16,14 +16,15 @@ class _CreatePageState extends State<CreatePage> {
   bool _isQuestionAnswerClicked = false;
   bool _isMultipleChoiceClicked = false;
 
-  TextEditingController _questionController = TextEditingController();
-  TextEditingController _correctAnswerController = TextEditingController();
-  List<TextEditingController> _falseAnswerControllers = [
+  final TextEditingController _questionController = TextEditingController();
+  final TextEditingController _correctAnswerController =
+      TextEditingController();
+  final List<TextEditingController> _falseAnswerControllers = [
     TextEditingController()
   ];
   String _question = '';
   String _correctAnswer = '';
-  List<String> _falseAnswers = [''];
+  final List<String> _falseAnswers = [''];
 
   void _onQuestionAnswerClicked() {
     setState(() {
@@ -115,29 +116,29 @@ class _CreatePageState extends State<CreatePage> {
       children: [
         ElevatedButton(
           onPressed: _onQuestionAnswerClicked,
-          child: const Text('Question-Answer Set'),
           style: ElevatedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 20),
             padding: const EdgeInsets.all(16),
           ),
+          child: const Text('Question-Answer Set'),
         ),
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: _onMultipleChoiceClicked,
-          child: const Text('Multiple Choice Set'),
           style: ElevatedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 20),
             padding: const EdgeInsets.all(16),
           ),
+          child: const Text('Multiple Choice Set'),
         ),
         const SizedBox(height: 16),
         ElevatedButton(
-          onPressed: () {}, // Implement functionality as needed
-          child: const Text('Multiple Answer Set'),
+          onPressed: () {},
           style: ElevatedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 20),
             padding: const EdgeInsets.all(16),
-          ),
+          ), // Implement functionality as needed
+          child: const Text('Multiple Answer Set'),
         ),
       ],
     );
@@ -151,11 +152,11 @@ class _CreatePageState extends State<CreatePage> {
           alignment: Alignment.centerLeft,
           child: ElevatedButton(
             onPressed: _onBackPressed,
-            child: const Text('Back'),
             style: ElevatedButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
               padding: const EdgeInsets.all(16),
             ),
+            child: const Text('Back'),
           ),
         ),
         for (int i = 0; i < _questionControllers.length; i++) ...[
@@ -200,11 +201,11 @@ class _CreatePageState extends State<CreatePage> {
         ],
         ElevatedButton(
           onPressed: _addQAPair,
-          child: const Text('Add Q/A Pair'),
           style: ElevatedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 20),
             padding: const EdgeInsets.all(16),
           ),
+          child: const Text('Add Q/A Pair'),
         ),
         const SizedBox(height: 16),
         for (var qaPair in _qaPairs)
@@ -224,11 +225,11 @@ class _CreatePageState extends State<CreatePage> {
           alignment: Alignment.centerLeft,
           child: ElevatedButton(
             onPressed: _onBackPressed,
-            child: const Text('Back'),
             style: ElevatedButton.styleFrom(
               textStyle: const TextStyle(fontSize: 20),
               padding: const EdgeInsets.all(16),
             ),
+            child: const Text('Back'),
           ),
         ),
         TextField(
@@ -279,11 +280,11 @@ class _CreatePageState extends State<CreatePage> {
         ],
         ElevatedButton(
           onPressed: _addFalseAnswer,
-          child: const Text('Add False Answer'),
           style: ElevatedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 20),
             padding: const EdgeInsets.all(16),
           ),
+          child: const Text('Add False Answer'),
         ),
         const SizedBox(height: 16),
         Text(
