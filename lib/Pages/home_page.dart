@@ -22,7 +22,8 @@ class _HomePageState extends State<HomePage> {
   // }
 
   // navigate around the bottom nav bar
-  int _selectedIndex = 0;
+  // Index 3 makes the app start at the folders page
+  int _selectedIndex = 3;
   void _navigateBottomNavBar(int index) {
     setState(() {
       _selectedIndex = index;
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     UserHomePage(),
     ContentPage(),
     CreatePage(),
-    LibraryPage(),
+    TrueHomeScreen(),
     ProfilePage(),
   ];
 

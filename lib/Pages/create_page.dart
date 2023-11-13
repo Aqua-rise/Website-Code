@@ -115,6 +115,15 @@ class _CreatePageState extends State<CreatePage> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         ElevatedButton(
+          onPressed: null,
+          style: ElevatedButton.styleFrom(
+            textStyle: const TextStyle(fontSize: 20),
+            padding: const EdgeInsets.all(16),
+          ),
+          child: const Text(
+              'This implementation will eventually be fused with the "My Sets" page'),
+        ),
+        ElevatedButton(
           onPressed: _onQuestionAnswerClicked,
           style: ElevatedButton.styleFrom(
             textStyle: const TextStyle(fontSize: 20),
