@@ -20,17 +20,17 @@ class HomeScreenState extends State<TrueHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 237, 237, 237),
+      backgroundColor: const Color.fromARGB(255, 237, 237, 237),
       appBar: AppBar(
-        title: Text("My folders"),
+        title: const Text("My folders"),
       ),
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: <Widget>[
-            DrawerHeader(
+            const DrawerHeader(
               decoration: BoxDecoration(
-                color: const Color.fromRGBO(33, 150, 243, 1),
+                color: Color.fromRGBO(33, 150, 243, 1),
               ),
               child: Text(
                 'Username',
@@ -41,24 +41,24 @@ class HomeScreenState extends State<TrueHomeScreen> {
               ),
             ),
             ListTile(
-              leading: Icon(Icons.account_circle),
-              title: Text('Profile'),
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Profile'),
               onTap: () {
                 // Profile stuff will go here
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.settings),
-              title: Text('Settings'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Settings'),
               onTap: () {
                 // Settings stuff will go here
                 Navigator.pop(context);
               },
             ),
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text('Logout'),
+              leading: const Icon(Icons.logout),
+              title: const Text('Logout'),
               onTap: (signUserOut),
             ),
           ],
@@ -71,7 +71,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
             return Center(child: Text('Error: ${snapshot.error}'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
           final folders = snapshot.data?.docs ?? [];
 
@@ -118,7 +118,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
                           ],
                         ),
                         onTap: () {
-                          // TODO: handle folder tap
+                          // TODO: Code to call sets in folder for display go here
                         },
                       ),
                     ),
@@ -133,10 +133,10 @@ class HomeScreenState extends State<TrueHomeScreen> {
                 child: ElevatedButton(
                   onPressed: () => _createFolderDialog(context),
                   style: ElevatedButton.styleFrom(
-                    shape: CircleBorder(),
-                    padding: EdgeInsets.all(24),
+                    shape: const CircleBorder(),
+                    padding: const EdgeInsets.all(24),
                   ),
-                  child: Icon(Icons.add, size: 30),
+                  child: const Icon(Icons.add, size: 30),
                 ),
               ),
             ],
@@ -152,24 +152,24 @@ class HomeScreenState extends State<TrueHomeScreen> {
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Create a new folder'),
+          title: const Text('Create a new folder'),
           content: TextField(
             controller: _folderNameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Name of Folder",
               border: OutlineInputBorder(),
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 _folderNameController.clear();
                 Navigator.of(dialogContext).pop();
               },
             ),
             TextButton(
-              child: Text('Create'),
+              child: const Text('Create'),
               onPressed: () async {
                 if (_folderNameController.text.trim().isNotEmpty) {
                   await _firestoreService
@@ -194,23 +194,23 @@ class HomeScreenState extends State<TrueHomeScreen> {
       barrierDismissible: false, // user must tap button for close dialog
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: Text('Edit Folder Name'),
+          title: const Text('Edit Folder Name'),
           content: TextField(
             controller: _editFolderNameController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
               hintText: "Enter a new folder name",
               border: OutlineInputBorder(),
             ),
           ),
           actions: <Widget>[
             TextButton(
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
               onPressed: () {
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
               },
             ),
             TextButton(
-              child: Text('Save'),
+              child: const Text('Save'),
               onPressed: () async {
                 String newFolderName = _editFolderNameController.text.trim();
                 if (newFolderName.isNotEmpty &&
@@ -250,7 +250,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
 
           // Shows a snackbar, confirming the deletion of the folder
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Folder deleted successfully')),
+            const SnackBar(content: Text('Folder deleted successfully')),
           );
         }
       } catch (e) {
@@ -275,12 +275,12 @@ class HomeScreenState extends State<TrueHomeScreen> {
               content: Text(content),
               actions: <Widget>[
                 TextButton(
-                  child: Text('Cancel'),
+                  child: const Text('Cancel'),
                   onPressed: () => Navigator.of(dialogContext)
                       .pop(false), // Dismiss and return false
                 ),
                 TextButton(
-                  child: Text('Delete'),
+                  child: const Text('Delete'),
                   onPressed: () => Navigator.of(dialogContext)
                       .pop(true), // Dismiss and return true
                 ),
@@ -307,7 +307,7 @@ class FirestoreService {
           .collection('folders')
           .snapshots();
     }
-    return Stream.empty();
+    return const Stream.empty();
   }
 
   Future<void> createFolder(String folderName) async {
