@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Color.fromARGB(255, 217, 224, 224),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -81,8 +81,9 @@ class _LoginPageState extends State<LoginPage> {
 
                 // logo
                 Image.asset(
-                  'lib/images/quiz.png',
-                  height: 125,
+                  'lib/images/Questure (Non-gradient).png',
+                  height: 500,
+                  width: 500,
                 ),
 
                 const SizedBox(height: 50),
@@ -94,14 +95,14 @@ class _LoginPageState extends State<LoginPage> {
                     Text(
                       'Welcome',
                       style: TextStyle(
-                        color: Colors.grey[700],
+                        color: const Color.fromRGBO(14, 60, 83, 1),
                         fontSize: 16,
                       ),
                     ),
                     const Text(
                       ' B',
                       style: TextStyle(
-                        color: Colors.lightBlue,
+                        color: Color.fromRGBO(148, 204, 202, 1),
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -109,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text(
                       'A',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 221, 205, 63),
+                        color: Color.fromARGB(255, 148, 204, 202),
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                       ),
@@ -117,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text(
                       'C',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 236, 69, 125),
+                        color: Color.fromARGB(255, 148, 204, 202),
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -125,7 +126,7 @@ class _LoginPageState extends State<LoginPage> {
                     const Text(
                       'K',
                       style: TextStyle(
-                        color: Color.fromARGB(255, 37, 201, 94),
+                        color: Color.fromARGB(255, 148, 204, 202),
                         fontSize: 16,
                         fontWeight: FontWeight.w400,
                       ),
