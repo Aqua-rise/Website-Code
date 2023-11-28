@@ -70,7 +70,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 217, 224, 224),
+      backgroundColor: const Color.fromARGB(255, 217, 224, 224),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -89,17 +89,17 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 50),
 
                 // welcome
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       'Welcome',
                       style: TextStyle(
-                        color: const Color.fromRGBO(14, 60, 83, 1),
+                        color: Color.fromRGBO(14, 60, 83, 1),
                         fontSize: 16,
                       ),
                     ),
-                    const Text(
+                    Text(
                       ' B',
                       style: TextStyle(
                         color: Color.fromRGBO(148, 204, 202, 1),
@@ -107,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'A',
                       style: TextStyle(
                         color: Color.fromARGB(255, 148, 204, 202),
@@ -115,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'C',
                       style: TextStyle(
                         color: Color.fromARGB(255, 148, 204, 202),
@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    const Text(
+                    Text(
                       'K',
                       style: TextStyle(
                         color: Color.fromARGB(255, 148, 204, 202),
@@ -131,7 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         fontWeight: FontWeight.w400,
                       ),
                     ),
-                    const Text(
+                    Text(
                       '!',
                       style: TextStyle(
                         fontSize: 16,
@@ -143,45 +143,56 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
 
                 // email textfield
-                MyTextField(
-                  controller: emailController,
-                  hintText: 'Email',
-                  obscureText: false,
+                SizedBox(
+                  width: 1100,
+                  child: MyTextField(
+                    controller: emailController,
+                    hintText: 'Email',
+                    obscureText: false,
+                  ),
                 ),
 
                 const SizedBox(height: 10),
 
                 // password textfield
-                MyTextField(
-                  controller: passwordController,
-                  hintText: 'Password',
-                  obscureText: true,
-                ),
-
-                const SizedBox(height: 10),
-
-                // forgot password?
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Email or Password?',
-                        style: TextStyle(
-                          color: Colors.grey[600],
-                        ),
-                      ),
-                    ],
+                SizedBox(
+                  width: 1100,
+                  child: MyTextField(
+                    controller: passwordController,
+                    hintText: 'Password',
+                    obscureText: true,
                   ),
                 ),
 
-                const SizedBox(height: 25),
+                const SizedBox(height: 15),
+
+                // forgot password?
+                const SizedBox(
+                  width: 1100,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 25.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Forgot Email or Password?',
+                          style: TextStyle(
+                              color: Color.fromARGB(255, 98, 179, 255)),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 15),
 
                 // sign in button
-                MyButton(
-                  text: 'Log in',
-                  onTap: signUserIn,
+                SizedBox(
+                  width: 1100,
+                  child: MyButton(
+                    text: 'Log in',
+                    onTap: signUserIn,
+                  ),
                 ),
 
                 const SizedBox(height: 15),

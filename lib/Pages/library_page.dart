@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:questure/Pages/card_list_screen.dart';
 
 class TrueHomeScreen extends StatefulWidget {
   const TrueHomeScreen({Key? key}) : super(key: key);
@@ -20,9 +21,14 @@ class HomeScreenState extends State<TrueHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 237, 237, 237),
+      backgroundColor: const Color.fromARGB(255, 217, 224, 224),
       appBar: AppBar(
-        title: const Text("My folders"),
+        title: const Text("My folders",
+            style: TextStyle(
+              color: Color.fromRGBO(14, 60, 83, 1),
+              fontSize: 24,
+            )),
+        backgroundColor: const Color.fromRGBO(148, 204, 202, 1),
       ),
       drawer: Drawer(
         child: ListView(
@@ -30,12 +36,12 @@ class HomeScreenState extends State<TrueHomeScreen> {
           children: <Widget>[
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(33, 150, 243, 1),
+                color: Color.fromRGBO(148, 204, 202, 1),
               ),
               child: Text(
                 'Username',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Color.fromRGBO(14, 60, 83, 1),
                   fontSize: 24,
                 ),
               ),
@@ -75,73 +81,82 @@ class HomeScreenState extends State<TrueHomeScreen> {
           }
           final folders = snapshot.data?.docs ?? [];
 
-          return Stack(
-            children: [
-              ListView.builder(
-                itemCount: folders.length,
-                itemBuilder: (context, index) {
-                  DocumentSnapshot folder = folders[index];
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 8.0, vertical: 4.0),
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      child: ListTile(
-                        title: Text(folders[index]['name']),
-                        subtitle: Text(
-                            '${folders[index]['setsCount'] ?? 0} sets present'),
-                        trailing: PopupMenuButton<String>(
-                          onSelected: (String value) {
-                            switch (value) {
-                              case 'Edit':
-                                //This calls on the edit folder name method to edit a folder name
-                                _editFolderName(context, folder);
-                                break;
-                              case 'Delete':
-                                //This calls on the delete folder method to delete and confirm deletion of folders
-                                _deleteFolder(folder.id);
-                                break;
-                              default:
-                            }
-                          },
-                          itemBuilder: (BuildContext context) =>
-                              <PopupMenuEntry<String>>[
-                            const PopupMenuItem<String>(
-                              value: 'Edit',
-                              child: Text('Edit'),
+          return Center(
+            child: SizedBox(
+              width: 1000,
+              child: Stack(
+                children: [
+                  ListView.builder(
+                    itemCount: folders.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot folder = folders[index];
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 4.0),
+                        child: Card(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0)),
+                          child: ListTile(
+                            title: Text(folders[index]['name'],
+                                style: const TextStyle(
+                                  color: Color.fromRGBO(14, 60, 83, 1),
+                                  fontSize: 20,
+                                )),
+                            trailing: PopupMenuButton<String>(
+                              onSelected: (String value) {
+                                switch (value) {
+                                  case 'Edit':
+                                    //This calls on the edit folder name method to edit a folder name
+                                    _editFolderName(context, folder);
+                                    break;
+                                  case 'Delete':
+                                    //This calls on the delete folder method to delete and confirm deletion of folders
+                                    _deleteFolder(folder.id);
+                                    break;
+                                  default:
+                                }
+                              },
+                              itemBuilder: (BuildContext context) =>
+                                  <PopupMenuEntry<String>>[
+                                const PopupMenuItem<String>(
+                                  value: 'Edit',
+                                  child: Text('Edit'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Delete',
+                                  child: Text('Delete'),
+                                ),
+                              ],
                             ),
-                            const PopupMenuItem<String>(
-                              value: 'Delete',
-                              child: Text('Delete'),
-                            ),
-                          ],
+                            onTap: () {
+                              //functionality of folders to navagate the card list screen on click or tap
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (context) => CardListScreen(
+                                    folderId: folder.id,
+                                    folderName: folder['name'],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                        onTap: () {
-                          // TODO: Code to call sets in folder for display go here
-                        },
-                      ),
-                    ),
-                  );
-                },
-              ),
-
-              // Add folder button
-              Positioned(
-                bottom: 16.0,
-                right: 16.0,
-                child: ElevatedButton(
-                  onPressed: () => _createFolderDialog(context),
-                  style: ElevatedButton.styleFrom(
-                    shape: const CircleBorder(),
-                    padding: const EdgeInsets.all(24),
+                      );
+                    },
                   ),
-                  child: const Icon(Icons.add, size: 30),
-                ),
+                ],
               ),
-            ],
+            ),
           );
         },
+      ),
+      // Functionality for the add folder button
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _createFolderDialog(context);
+        },
+        backgroundColor: const Color.fromRGBO(148, 204, 202, 1),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -151,33 +166,37 @@ class HomeScreenState extends State<TrueHomeScreen> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext dialogContext) {
-        return AlertDialog(
-          title: const Text('Create a new folder'),
-          content: TextField(
-            controller: _folderNameController,
-            decoration: const InputDecoration(
-              hintText: "Name of Folder",
-              border: OutlineInputBorder(),
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                _folderNameController.clear();
-                Navigator.of(dialogContext).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('Create'),
-              onPressed: () async {
-                if (_folderNameController.text.trim().isNotEmpty) {
-                  await _firestoreService
-                      .createFolder(_folderNameController.text.trim());
-                  _folderNameController.clear();
-                  Navigator.of(dialogContext).pop();
-                }
-              },
+        return Column(
+          children: [
+            AlertDialog(
+              title: const Text('Create a new folder'),
+              content: TextField(
+                controller: _folderNameController,
+                decoration: const InputDecoration(
+                  hintText: "Name of Folder",
+                  border: OutlineInputBorder(),
+                ),
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () {
+                    _folderNameController.clear();
+                    Navigator.of(dialogContext).pop();
+                  },
+                ),
+                TextButton(
+                  child: const Text('Create'),
+                  onPressed: () async {
+                    if (_folderNameController.text.trim().isNotEmpty) {
+                      await _firestoreService
+                          .createFolder(_folderNameController.text.trim());
+                      _folderNameController.clear();
+                      Navigator.of(dialogContext).pop();
+                    }
+                  },
+                ),
+              ],
             ),
           ],
         );
@@ -262,6 +281,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
     }
   }
 
+  //Delete conformation
   Future<bool> _showConfirmDialog({
     required BuildContext context,
     required String title,
@@ -293,7 +313,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
 }
 
 //This is the logic for creating and getting folders from firestore
-//This is also for displaying data from firestore, that's why the DeleteFolder method is not present
+//This is also for displaying data from firestore
 class FirestoreService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -319,9 +339,6 @@ class FirestoreService {
           .collection('folders')
           .add({
         'name': folderName,
-        'setsCount': 0, // This initializes the folder with 0 sets
-        'createdAt': Timestamp
-            .now(), // This gets the timestamp of when the folder was created
       });
     }
   }

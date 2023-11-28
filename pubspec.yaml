@@ -31,7 +31,7 @@ dependencies:
   flutter:
     sdk: flutter
 
-  english_words: ^4.0.0
+  shared_preferences: ^2.2.2
   provider: ^6.0.0
 
 # FIREBASE PACKAGES

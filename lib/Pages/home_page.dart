@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
     UserHomePage(),
     ContentPage(),
     CreatePage(),
-    TrueHomeScreen(),
+    TrueHomeScreen(), // Renamed from library_page
     ProfilePage(),
   ];
 
