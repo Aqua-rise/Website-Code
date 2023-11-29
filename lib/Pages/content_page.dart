@@ -15,13 +15,13 @@ class ContentPage extends StatelessWidget {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(16.0),
         ),
       ),
     );
   }
 
-  void main() => runApp(MaterialApp(home: ContentPage()));
+  void main() => runApp(const MaterialApp(home: ContentPage()));
 }

@@ -5,41 +5,44 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AddCardsScreen extends StatefulWidget {
   final String folderId;
 
-  const AddCardsScreen({Key? key, required this.folderId}) : super(key: key);
+  const AddCardsScreen({
+    Key? key,
+    required this.folderId,
+  }) : super(key: key);
 
   @override
-  _AddCardsScreenState createState() => _AddCardsScreenState();
+  AddCardsScreenState createState() => AddCardsScreenState();
 }
 
-class _AddCardsScreenState extends State<AddCardsScreen> {
+class AddCardsScreenState extends State<AddCardsScreen> {
   final List<TextEditingController> _questionControllers = [];
   final List<List<TextEditingController>> _answerControllers = [];
   final List<List<bool>> _answerCorrectness =
-      []; // Stored "true" or "false" Booleans
+      []; // To store "true" or "false" Booleans
   final List<String> _cardDocIDs = []; // To store Firestore document IDs
-  bool _navigateBackAfterSave = true;
+  bool navigateBackAfterSave = true;
 
   @override
   void initState() {
     super.initState();
-    _loadUserPreference();
-    _fetchAndPopulateData();
+    loadUserPreference();
+    fetchAndPopulateData();
   }
 
-  void _loadUserPreference() async {
+  void loadUserPreference() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      _navigateBackAfterSave = prefs.getBool('navigateBackAfterSave') ?? true;
+      navigateBackAfterSave = prefs.getBool('navigateBackAfterSave') ?? true;
     });
   }
 
-  void _saveUserPreference(bool value) async {
+  void saveUserPreference(bool value) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('navigateBackAfterSave', value);
   }
 
-  void _fetchAndPopulateData() async {
-    // Fetch data from Firestore
+  void fetchAndPopulateData() async {
+    // Fetch any existing set data from Firestore
     var cardSetSnapshot = await FirebaseFirestore.instance
         .collection('folders')
         .doc(widget.folderId)
@@ -65,16 +68,22 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
       _cardDocIDs.add(doc.id); // Store the document ID
     }
 
+    if (cardSetSnapshot.docs.isEmpty) {
+      // No sets present, create a default set
+      addCardPair();
+    }
+
     setState(() {});
   }
 
-  void _addCardPair() {
+  void addCardPair() {
     _questionControllers.add(TextEditingController());
     _answerControllers.add([TextEditingController()]);
-    _answerCorrectness.add([true]); // The first answer is true by default
+    _answerCorrectness.add([true]);
+    // The first answer is true by default
   }
 
-  void _addAnswer(int questionIndex) {
+  void addAnswer(int questionIndex) {
     setState(() {
       _answerControllers[questionIndex].add(TextEditingController());
       _answerCorrectness[questionIndex]
@@ -82,7 +91,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
     });
   }
 
-  void _removeAnswer(int questionIndex, int answerIndex) {
+  void removeAnswer(int questionIndex, int answerIndex) {
     setState(() {
       _answerControllers[questionIndex][answerIndex].dispose();
       _answerControllers[questionIndex].removeAt(answerIndex);
@@ -90,14 +99,14 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
     });
   }
 
-  void _toggleCorrectness(int questionIndex, int answerIndex) {
+  void toggleCorrectness(int questionIndex, int answerIndex) {
     setState(() {
       _answerCorrectness[questionIndex][answerIndex] =
           !_answerCorrectness[questionIndex][answerIndex];
     });
   }
 
-  void _deleteCardSet(int answerIndex) async {
+  void deleteCardSet(int answerIndex) async {
     if (answerIndex < _cardDocIDs.length) {
       // Delete from Firestore if it's an existing card
       await FirebaseFirestore.instance
@@ -134,8 +143,8 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
             onSelected: (value) {
               if (value == 1) {
                 // Toggle navigate back preference
-                _saveUserPreference(!_navigateBackAfterSave);
-                _navigateBackAfterSave = !_navigateBackAfterSave;
+                saveUserPreference(!navigateBackAfterSave);
+                navigateBackAfterSave = !navigateBackAfterSave;
               }
             },
             itemBuilder: (context) => [
@@ -144,10 +153,10 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                 child: Row(
                   children: [
                     Icon(
-                      _navigateBackAfterSave
+                      navigateBackAfterSave
                           ? Icons.check_box
                           : Icons.check_box_outline_blank,
-                      color: _navigateBackAfterSave ? Colors.green : Colors.red,
+                      color: navigateBackAfterSave ? Colors.green : Colors.red,
                     ),
                     const SizedBox(width: 8),
                     const Text('Navigate Back After Save'),
@@ -156,10 +165,9 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
               ),
             ],
           ),
-          IconButton(
-            icon: const Icon(Icons.save),
-            onPressed: _saveCardData, // Call the save method here
-          ),
+          //Save button logic here
+
+          IconButton(icon: const Icon(Icons.save), onPressed: saveCardData)
         ],
         backgroundColor: const Color.fromRGBO(148, 204, 202, 1),
       ),
@@ -168,22 +176,22 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
           child: Column(
             children:
                 List.generate(_questionControllers.length, (questionIndex) {
-              return ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 775),
+              return SizedBox(
+                width: 775,
                 child: Center(
                   child: Card(
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Column(
                         children: [
-                          _buildTextField(_questionControllers[questionIndex],
+                          buildTextField(_questionControllers[questionIndex],
                               'Question ${questionIndex + 1}'),
                           TextButton(
                             child: const Text(
                               'Delete card set',
                               style: TextStyle(color: Colors.red),
                             ),
-                            onPressed: () => _deleteCardSet(questionIndex),
+                            onPressed: () => deleteCardSet(questionIndex),
                           ),
                           Column(
                             children: List.generate(
@@ -192,7 +200,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                               return Row(
                                 children: [
                                   Expanded(
-                                    child: _buildTextField(
+                                    child: buildTextField(
                                         _answerControllers[questionIndex]
                                             [answerIndex],
                                         'Answer ${answerIndex + 1}'),
@@ -209,7 +217,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                                                 ? Colors.green
                                                 : Colors.red,
                                           ),
-                                          onPressed: () => _toggleCorrectness(
+                                          onPressed: () => toggleCorrectness(
                                               questionIndex, answerIndex),
                                         )
                                       : Container(),
@@ -217,7 +225,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                                     icon: const Icon(
                                       Icons.delete,
                                     ),
-                                    onPressed: () => _removeAnswer(
+                                    onPressed: () => removeAnswer(
                                         questionIndex, answerIndex),
                                   ),
                                 ],
@@ -226,7 +234,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
                           ),
                           TextButton(
                             child: const Text('Add another answer'),
-                            onPressed: () => _addAnswer(questionIndex),
+                            onPressed: () => addAnswer(questionIndex),
                           ),
                         ],
                       ),
@@ -240,7 +248,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          setState(_addCardPair);
+          setState(addCardPair);
         },
         backgroundColor: const Color.fromRGBO(148, 204, 202, 1),
         child: const Icon(Icons.add),
@@ -248,7 +256,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
     );
   }
 
-  Widget _buildTextField(TextEditingController controller, String label) {
+  Widget buildTextField(TextEditingController controller, String label) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: TextField(
@@ -264,7 +272,7 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
   }
 
   //Method for saving sets to Firestore
-  Future<void> _saveCardData() async {
+  Future<void> saveCardData() async {
     var collectionRef = FirebaseFirestore.instance
         .collection('folders')
         .doc(widget.folderId)
@@ -293,36 +301,20 @@ class _AddCardsScreenState extends State<AddCardsScreen> {
       }
     }
 
-    if (_navigateBackAfterSave) {
+    if (navigateBackAfterSave) {
       Navigator.pop(context);
     }
   }
 
-  void _removeCard(int cardIndex) async {
-    if (cardIndex < _cardDocIDs.length) {
-      // Delete from Firestore
-      await FirebaseFirestore.instance
-          .collection('folders')
-          .doc(widget.folderId)
-          .collection('cards')
-          .doc(_cardDocIDs[cardIndex])
-          .delete();
-
-      // Remove from local state
-      _cardDocIDs.removeAt(cardIndex);
-      _questionControllers.removeAt(cardIndex);
-      _answerControllers.removeAt(cardIndex);
-      _answerCorrectness.removeAt(cardIndex);
-    }
-
-    setState(() {});
-  }
-
   @override
   void dispose() {
-    _questionControllers.forEach((controller) => controller.dispose());
+    for (var controller in _questionControllers) {
+      controller.dispose();
+    }
     for (var answerList in _answerControllers) {
-      answerList.forEach((controller) => controller.dispose());
+      for (var controller in answerList) {
+        controller.dispose();
+      }
     }
     super.dispose();
   }

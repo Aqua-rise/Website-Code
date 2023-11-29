@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:questure/Pages/card_list_screen.dart';
+import 'package:questure/Pages/create_page.dart';
+import 'package:questure/Pages/add_cards_screen.dart';
 
 class TrueHomeScreen extends StatefulWidget {
   const TrueHomeScreen({Key? key}) : super(key: key);
@@ -11,7 +13,6 @@ class TrueHomeScreen extends StatefulWidget {
 }
 
 class HomeScreenState extends State<TrueHomeScreen> {
-  final TextEditingController _folderNameController = TextEditingController();
   final FirestoreService _firestoreService = FirestoreService();
 
   void signUserOut() {
@@ -102,16 +103,25 @@ class HomeScreenState extends State<TrueHomeScreen> {
                                   color: Color.fromRGBO(14, 60, 83, 1),
                                   fontSize: 20,
                                 )),
+                            subtitle: Text(folders[index]['description'],
+                                style: const TextStyle(
+                                  color: Color.fromRGBO(14, 60, 83, 1),
+                                  fontSize: 15,
+                                )),
                             trailing: PopupMenuButton<String>(
                               onSelected: (String value) {
                                 switch (value) {
-                                  case 'Edit':
+                                  case 'Edit Name':
                                     //This calls on the edit folder name method to edit a folder name
-                                    _editFolderName(context, folder);
+                                    editFolderName(context, folder);
+                                    break;
+                                  case 'Edit Description':
+                                    //This calls on the edit folder name method to edit a folder name
+                                    editDescription(context, folder);
                                     break;
                                   case 'Delete':
                                     //This calls on the delete folder method to delete and confirm deletion of folders
-                                    _deleteFolder(folder.id);
+                                    deleteFolder(folder.id);
                                     break;
                                   default:
                                 }
@@ -119,8 +129,12 @@ class HomeScreenState extends State<TrueHomeScreen> {
                               itemBuilder: (BuildContext context) =>
                                   <PopupMenuEntry<String>>[
                                 const PopupMenuItem<String>(
-                                  value: 'Edit',
-                                  child: Text('Edit'),
+                                  value: 'Edit Name',
+                                  child: Text('Edit Name'),
+                                ),
+                                const PopupMenuItem<String>(
+                                  value: 'Edit Description',
+                                  child: Text('Edit Description'),
                                 ),
                                 const PopupMenuItem<String>(
                                   value: 'Delete',
@@ -150,10 +164,10 @@ class HomeScreenState extends State<TrueHomeScreen> {
           );
         },
       ),
-      // Functionality for the add folder button
+      // Functionality for the add folder button (now shows create options)
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _createFolderDialog(context);
+          showCreateOptions(context);
         },
         backgroundColor: const Color.fromRGBO(148, 204, 202, 1),
         child: const Icon(Icons.add),
@@ -161,52 +175,85 @@ class HomeScreenState extends State<TrueHomeScreen> {
     );
   }
 
-  Future<void> _createFolderDialog(BuildContext context) async {
-    return showDialog<void>(
+  void showCreateOptions(BuildContext context) {
+    showModalBottomSheet(
+      enableDrag: true,
       context: context,
-      barrierDismissible: false,
-      builder: (BuildContext dialogContext) {
-        return Column(
-          children: [
-            AlertDialog(
-              title: const Text('Create a new folder'),
-              content: TextField(
-                controller: _folderNameController,
-                decoration: const InputDecoration(
-                  hintText: "Name of Folder",
-                  border: OutlineInputBorder(),
+      builder: (BuildContext bc) {
+        return Wrap(
+          children: <Widget>[
+            const SizedBox(
+              height: 20,
+              width: 20,
+            ),
+            Center(
+              child: SizedBox(
+                width: 650,
+                child: Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.folder),
+                    title: const Text('Create Folder',
+                        style: TextStyle(
+                          color: Color.fromRGBO(14, 60, 83, 1),
+                          fontSize: 17,
+                        )),
+                    onTap: () {
+                      Navigator.pop(context);
+                      //functinality to go to the Create page on tap
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const CreatePage(),
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
-              actions: <Widget>[
-                TextButton(
-                  child: const Text('Cancel'),
-                  onPressed: () {
-                    _folderNameController.clear();
-                    Navigator.of(dialogContext).pop();
-                  },
+            ),
+            const SizedBox(
+              height: 20,
+              width: 20,
+            ),
+            Center(
+              child: SizedBox(
+                width: 650,
+                child: Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.note_add),
+                    title: const Text('Create Card Set',
+                        style: TextStyle(
+                          color: Color.fromRGBO(14, 60, 83, 1),
+                          fontSize: 17,
+                        )),
+                    onTap: () {
+                      Navigator.pop(context);
+                      // Asynchronously create the default folder and get its ID
+                      createDefaultFolder().then((defaultFolderId) {
+                        // Navigate to the AddCardsScreen with the default folder ID
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              AddCardsScreen(folderId: defaultFolderId),
+                        ));
+                      });
+                    },
+                  ),
                 ),
-                TextButton(
-                  child: const Text('Create'),
-                  onPressed: () async {
-                    if (_folderNameController.text.trim().isNotEmpty) {
-                      await _firestoreService
-                          .createFolder(_folderNameController.text.trim());
-                      _folderNameController.clear();
-                      Navigator.of(dialogContext).pop();
-                    }
-                  },
-                ),
-              ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+              width: 20,
             ),
           ],
         );
       },
+      backgroundColor: const Color.fromARGB(255, 195, 201, 201),
     );
   }
 
-  Future<void> _editFolderName(
+  Future<void> editFolderName(
       BuildContext context, DocumentSnapshot folder) async {
-    final TextEditingController _editFolderNameController =
+    final TextEditingController editFolderNameController =
         TextEditingController(text: folder['name']);
     return showDialog<void>(
       context: context,
@@ -215,7 +262,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
         return AlertDialog(
           title: const Text('Edit Folder Name'),
           content: TextField(
-            controller: _editFolderNameController,
+            controller: editFolderNameController,
             decoration: const InputDecoration(
               hintText: "Enter a new folder name",
               border: OutlineInputBorder(),
@@ -231,7 +278,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
             TextButton(
               child: const Text('Save'),
               onPressed: () async {
-                String newFolderName = _editFolderNameController.text.trim();
+                String newFolderName = editFolderNameController.text.trim();
                 if (newFolderName.isNotEmpty &&
                     newFolderName != folder['name']) {
                   await _firestoreService.updateFolderName(
@@ -246,9 +293,52 @@ class HomeScreenState extends State<TrueHomeScreen> {
     );
   }
 
-  Future<void> _deleteFolder(String folderId) async {
+  Future<void> editDescription(
+      BuildContext context, DocumentSnapshot folder) async {
+    final TextEditingController editFolderDescriptionController =
+        TextEditingController(text: folder['description']);
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button for close dialog
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text('Edit Folder Description'),
+          content: TextField(
+            controller: editFolderDescriptionController,
+            decoration: const InputDecoration(
+              hintText: "Enter a new descrption",
+              border: OutlineInputBorder(),
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+              },
+            ),
+            TextButton(
+              child: const Text('Save'),
+              onPressed: () async {
+                String newFolderName =
+                    editFolderDescriptionController.text.trim();
+                if (newFolderName.isNotEmpty &&
+                    newFolderName != folder['description']) {
+                  await _firestoreService.updateFolderDescription(
+                      folder.id, newFolderName);
+                  Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+                }
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> deleteFolder(String folderId) async {
     // Confirm with the user before deleting the folder
-    bool confirmDelete = await _showConfirmDialog(
+    bool confirmDelete = await showConfirmDialog(
       context: context,
       title: "Delete Folder",
       content: "Are you sure you want to delete this folder?",
@@ -282,7 +372,7 @@ class HomeScreenState extends State<TrueHomeScreen> {
   }
 
   //Delete conformation
-  Future<bool> _showConfirmDialog({
+  Future<bool> showConfirmDialog({
     required BuildContext context,
     required String title,
     required String content,
@@ -309,6 +399,23 @@ class HomeScreenState extends State<TrueHomeScreen> {
           },
         ) ??
         false; // In case the dialog is dismissed by tapping outside of it
+  }
+}
+
+Future<String> createDefaultFolder() async {
+  User? user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    DocumentReference folderRef = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .collection('folders')
+        .add({
+      'name': 'New folder', // Temporary empty name
+      'description': '' //Empty description
+    });
+    return folderRef.id; // Return the document ID of the new folder
+  } else {
+    throw Exception('An error occured');
   }
 }
 
@@ -353,6 +460,21 @@ class FirestoreService {
           .doc(folderId)
           .update({
         'name': newName,
+      });
+    }
+  }
+
+  Future<void> updateFolderDescription(
+      String folderId, String newDescription) async {
+    User? user = _auth.currentUser;
+    if (user != null) {
+      await _firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('folders')
+          .doc(folderId)
+          .update({
+        'description': newDescription,
       });
     }
   }
