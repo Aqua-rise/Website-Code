@@ -89,7 +89,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 // logo
                 Image.asset(
                   'lib/images/Questure (Non-gradient).png',
-                  height: 125,
+                  height: 500,
+                  width: 500,
                 ),
 
                 const SizedBox(height: 25),
