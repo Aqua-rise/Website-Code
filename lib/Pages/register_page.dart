@@ -77,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: const Color.fromARGB(255, 217, 224, 224),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -88,7 +88,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
                 // logo
                 Image.asset(
-                  'lib/images/quiz.png',
+                  'lib/images/Questure (Non-gradient).png',
                   height: 125,
                 ),
 

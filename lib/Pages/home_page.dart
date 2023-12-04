@@ -1,10 +1,7 @@
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:questure/Pages/content_page.dart';
 import 'package:questure/Pages/create_page.dart';
 import 'package:questure/Pages/library_page.dart';
-import 'package:questure/Pages/profile_page.dart';
-import 'package:questure/Pages/user_home_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -23,7 +20,7 @@ class _HomePageState extends State<HomePage> {
 
   // navigate around the bottom nav bar
   // Index 3 makes the app start at the folders page
-  int _selectedIndex = 3;
+  int _selectedIndex = 1;
   void _navigateBottomNavBar(int index) {
     setState(() {
       _selectedIndex = index;
@@ -32,11 +29,11 @@ class _HomePageState extends State<HomePage> {
 
   // pages to navigate to
   final List<Widget> _pages = const [
-    UserHomePage(),
-    ContentPage(),
+    // UserHomePage(),
+    // ContentPage(),
     CreatePage(),
     TrueHomeScreen(), // Renamed from library_page
-    ProfilePage(),
+    // ProfilePage(),
   ];
 
   @override
@@ -48,14 +45,14 @@ class _HomePageState extends State<HomePage> {
         onTap: _navigateBottomNavBar,
         type: BottomNavigationBarType.fixed,
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.public),
-            label: 'Browse',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.home),
+          //   label: 'Home',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.public),
+          //   label: 'Browse',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.add_to_photos,
@@ -67,10 +64,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.library_books),
             label: 'My Sets',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.person),
+          //   label: 'Profile',
+          // ),
         ],
       ),
       // appBar: AppBar(

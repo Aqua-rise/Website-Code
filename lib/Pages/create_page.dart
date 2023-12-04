@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:questure/components/my_button.dart';
 import 'package:questure/components/my_description_box.dart';
-import 'package:questure/components/my_smaller_button.dart';
 import 'package:questure/components/my_textfield.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,9 +38,8 @@ class _CreatePageState extends State<CreatePage> {
             ),
             const SizedBox(width: 85),
             Image.asset(
-              'lib/images/quiz.png',
-              width: 40,
-              height: 40,
+              'lib/images/Questure (Non-gradient).png',
+              height: 125,
             ),
           ],
         ),
@@ -113,19 +111,11 @@ class _CreatePageState extends State<CreatePage> {
                   ),
                 ),
                 const SizedBox(height: 100),
-                Row(
+                const Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(right: 25),
-                      child: MySmallerButton(
-                        onTap: () {
-                          setState(() {
-                            isPublicBool = !isPublicBool;
-                          });
-                        },
-                        text: isPublicBool ? 'Public' : 'Private',
-                      ),
+                      padding: EdgeInsets.only(right: 25),
                     ),
                   ],
                 ),
