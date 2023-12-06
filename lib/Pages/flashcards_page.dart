@@ -3,6 +3,7 @@ import 'package:questure/components/progress_bar.dart';
 import 'package:questure/configs/constants.dart';
 import 'package:questure/notifiers/flashcard_notifier.dart';
 import 'package:provider/provider.dart';
+import 'package:questure/util/methods.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:questure/app/custom_appbar.dart';
 import 'package:questure/components/question.dart';
@@ -42,8 +43,8 @@ class _FlashcardsPageState extends State<FlashcardsPage> {
             child: CustomAppBar()),
         body: IgnorePointer(
           ignoring: notifier.ignoreTouches,
-          child: Stack(
-            children: const [
+          child: const Stack(
+            children: [
               Align(alignment: Alignment.bottomCenter, child: ProgressBar()),
               Answer(),
               Question(),

@@ -1,23 +1,30 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:questure/components/question.dart';
 import 'package:questure/components/results.dart';
 import 'package:questure/configs/constants.dart';
 import 'package:questure/enums/slide_direction.dart';
 
 class FlashcardsNotifier extends ChangeNotifier {
+  String topic = ""; // Add this line to declare the topic variable
+
+  List<Question> selectedQuestions = []; // Add this line for selectedQuestions
+
+  List<Question> incorrectCards = []; // Add this line for incorrectCards
+
   int roundTally = 0,
       cardTally = 0,
       correctTally = 0,
       incorrectTally = 0,
       correctPercentage = 0;
 
+  double percentComplete = 0.0;
+
   calculateCorrectPercentage() {
-    final percentage = correctTally / cardTally;
+    final percentage = cardTally != 0 ? correctTally / cardTally : 0;
     correctPercentage = (percentage * 100).round();
   }
-
-  double percentComplete = 0.0;
 
   calculateCompletedPercent() {
     percentComplete = (correctTally + incorrectTally) / cardTally;
@@ -28,8 +35,6 @@ class FlashcardsNotifier extends ChangeNotifier {
     percentComplete = 0.0;
     notifyListeners();
   }
-
-//Implementation for incorrect cards would go here
 
   bool isFirstRound = true,
       isRoundCompleted = false,
@@ -50,6 +55,7 @@ class FlashcardsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  startRound() {
     roundTally++;
     cardTally = selectedQuestions.length;
     correctTally = 0;
@@ -114,7 +120,8 @@ class FlashcardsNotifier extends ChangeNotifier {
 
   runSwipeAnswer({required SlideDirection direction}) {
     updateCardOutcome(
-        word: word2, isCorrect: direction == SlideDirection.leftAway);
+        question: selectedQuestions[roundTally - 1],
+        isCorrect: direction == SlideDirection.leftAway);
     swipedDirection = direction;
     resetSwipeAnswer = false;
     swipeAnswer = true;
@@ -127,3 +134,10 @@ class FlashcardsNotifier extends ChangeNotifier {
     flipAnswer = false;
     swipeAnswer = false;
   }
+
+  void generateCurrentWord({required BuildContext context}) {}
+
+  void generateAllQuestions() {}
+
+  void generateCurrentQuestion({required BuildContext context}) {}
+}
