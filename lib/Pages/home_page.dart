@@ -61,8 +61,11 @@ class _HomePageState extends State<HomePage> {
             label: 'Create',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.library_books),
-            label: 'My Sets',
+            icon: Icon(
+              Icons.library_books,
+              size: 40,
+            ),
+            label: 'My Folders',
           ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.person),
